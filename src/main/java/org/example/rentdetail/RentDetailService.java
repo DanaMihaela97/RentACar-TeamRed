@@ -3,6 +3,7 @@ package org.example.rentdetail;
 import lombok.Data;
 import org.example.car.Car;
 import org.example.client.Client;
+import org.example.client.ClientRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -10,6 +11,7 @@ import org.hibernate.cfg.Configuration;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Scanner;
 
 @Data
@@ -33,22 +35,36 @@ public class RentDetailService {
             LocalDate localDate = LocalDate.parse(startData, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
             LocalDate localDate1 = LocalDate.parse(endData, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
             Period period = Period.between(localDate, localDate1);
-            double totalPrice = car.getPrice() * period.getDays();
+            double totalPrice = (car.getPrice() * period.getDays());
+            float discount = 0.2f;
+            double result = totalPrice * discount;
+            System.out.printf("%.2f",result);
 
-            System.out.println("You rented this car for " + period.getDays() + " days!" + "\nYour total payment is: " + totalPrice);
 
-            RentDetail rentDetail1 = new RentDetail(startData, endData, pickUpLoc, totalPrice);
-            rentDetail1.setCar(car);
-            rentDetail1.setClient(car.getClient());
-            Client client2 = new Client();
-            client2.setTotalPrice(totalPrice);
-//            System.out.println(rentDetail1);
-            session.persist(rentDetail1);
-            for (RentDetail rd : rentDetail) {
-                session.persist(rd);
+            ClientRepository clientRepository = new ClientRepository();
+            List<Client> clientList = clientRepository.getAll();
+
+            for (Client cl : clientList) {
+                if (!(cl.getRentCount() >= 2) ){
+                    System.out.println("You rented this car for " + period.getDays() + " days!" + "\nYour total payment is: " + totalPrice);
+                    break;
+                } else {
+                    cl.setDiscount(discount);
+                    double finalPrice = totalPrice + result;
+                    System.out.println("Because you have rented more than 2 times, you will receive " + discount + " discount! \nYour total payment is: " + finalPrice);
+                }
             }
-            session.getTransaction().commit();
-        }
 
+                RentDetail rentDetail1 = new RentDetail(startData, endData, pickUpLoc, totalPrice);
+                rentDetail1.setCar(car);
+                rentDetail1.setClient(car.getClient());
+
+//            System.out.println(rentDetail1);
+                session.persist(rentDetail1);
+                for (RentDetail rd : rentDetail) {
+                    session.persist(rd);
+                }
+            session.getTransaction().commit();
+            }
+        }
     }
-}

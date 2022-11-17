@@ -34,15 +34,18 @@ public class Main {
 //        for (Car car : cars) {
 //            carRepository.update(car);
 //            createAccount();
-        Scanner scanner = new Scanner(System.in);
-       System.out.println("What is your client ID?: ");
-        int clientId = scanner.nextInt();
-        ClientRepository clientManagement = new ClientRepository();
-        Client client = new Client();
-        client = clientManagement.getById(clientId);
-        updateCarStatus(client);
-//        carCondition();
+//        Scanner scanner = new Scanner(System.in);
+//       System.out.println("What is your client ID?: ");
+//        int clientId = scanner.nextInt();
+//        ClientRepository clientManagement = new ClientRepository();
+//        Client client = new Client();
+//        client = clientManagement.getById(clientId);
+//        updateCarStatus(client);
+        carCondition();
 
         }
-    }
+
+}
+
+
 

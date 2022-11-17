@@ -21,8 +21,10 @@ public class Client {
     private String email;
     @Column
     private int rentCount;
-    @Column
+    @Column (nullable = false)
     private double totalPrice;
+    @Column
+    private double finalPrice;
     @Column
     private double discount;
     //    @Column
@@ -37,15 +39,18 @@ public class Client {
         this.email = email;
 
     }
-    public Client(){}
-    protected Client(String name, long licenseId, long phoneNumber, String email, double discount, double totalPrice, int rentCount){
+    public Client(){
+
+
+    }
+    protected Client(String name, long licenseId, long phoneNumber, String email, double discount, int rentCount, double finalPrice){
         this.name = name;
         this.licenseId = licenseId;
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.discount=discount;
-        this.totalPrice=totalPrice;
         this.rentCount=rentCount;
+        this.finalPrice=finalPrice;
 
     }
 
