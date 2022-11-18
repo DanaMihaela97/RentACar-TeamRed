@@ -7,6 +7,7 @@ import org.hibernate.Transaction;
 import org.hibernate.query.criteria.JpaCriteriaQuery;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.example.car.CarService.sessionFactory;
 
@@ -51,6 +52,12 @@ public class CarRepository implements CrudManagement<Car> {
             return session.get(Car.class, id);
         }
     }
+    public List<Car> getByGearbox(String gearbox){
+
+           return getAll().stream().filter(car -> car.getGearbox().equalsIgnoreCase(gearbox) &&
+                   car.getCarStatus() == CarStatus.AVAILABLE).collect(Collectors.toList());
+        }
+
 
     @Override
     public void delete(int item) {

@@ -5,6 +5,9 @@ import lombok.Data;
 import org.example.car.Car;
 import org.example.client.Client;
 
+import java.time.LocalDate;
+import java.util.Date;
+
 @Entity
 @Data
 @Table(name="rent_detail")
@@ -14,9 +17,9 @@ public class RentDetail {
     private int id;
 
     @Column
-    private String startDate;
+    private LocalDate startDate;
     @Column
-    private String endDate;
+    private LocalDate endDate;
     @Column
     private String pickUpLocation;
     @Column
@@ -24,16 +27,16 @@ public class RentDetail {
     @Column
     private double tax;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="client_id")
     private Client client;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="car_id")
     private Car car;
 
 
-    public RentDetail(String startDate, String endDate, String pickUpLocation, double client_totalPrice) {
+    public RentDetail(LocalDate startDate, LocalDate endDate, String pickUpLocation, double client_totalPrice) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.pickUpLocation = pickUpLocation;

@@ -13,7 +13,6 @@ import static org.example.car.CarService.sessionFactory;
 public class ClientRepository implements CrudManagement<Client> {
     @Override
     public void insert(Client item) {
-
         try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
             session.persist(item);
@@ -35,7 +34,6 @@ public class ClientRepository implements CrudManagement<Client> {
 
     @Override
     public List<Client> getAll() {
-
         try (Session session = sessionFactory.openSession()) {
             JpaCriteriaQuery<Client> jpaCriteriaQuery = session.getCriteriaBuilder()
                     .createQuery(Client.class);
@@ -68,4 +66,14 @@ public class ClientRepository implements CrudManagement<Client> {
             session.getTransaction().commit();
         }
     }
-}
+    public Client getByEmail(String email) {
+            List<Client> clientList = getAll();
+            for (Client client : clientList) {
+                if (client.getEmail().equals(email)) {
+                    return client;
+                }
+            }
+            return new Client();
+        }
+    }
+

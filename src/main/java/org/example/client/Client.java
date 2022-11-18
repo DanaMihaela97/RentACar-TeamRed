@@ -2,14 +2,14 @@ package org.example.client;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.example.car.Car;
 
 @Entity
 @Data
 
 public class Client {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column
     private long licenseId;
@@ -21,12 +21,14 @@ public class Client {
     private String email;
     @Column
     private int rentCount;
+
     @Column (nullable = false)
     private double totalPrice;
-    @Column
-    private double finalPrice;
-    @Column
-    private double discount;
+
+    @OneToOne
+    @JoinColumn(name = "car_id")
+    private Car car;
+
     //    @Column
 //    private double finalPrice;
 //    @OneToMany()
@@ -39,20 +41,9 @@ public class Client {
         this.email = email;
 
     }
-    public Client(){
-
-
-    }
-    protected Client(String name, long licenseId, long phoneNumber, String email, double discount, int rentCount, double finalPrice){
-        this.name = name;
-        this.licenseId = licenseId;
-        this.phoneNumber = phoneNumber;
-        this.email = email;
-        this.discount=discount;
-        this.rentCount=rentCount;
-        this.finalPrice=finalPrice;
-
+    public Client() {
     }
 
 
 }
+//scos one to one\\\\\\\\\\\

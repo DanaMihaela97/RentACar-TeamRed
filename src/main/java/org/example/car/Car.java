@@ -4,13 +4,13 @@ import org.example.client.Client;
 import org.example.client.ClientPackage;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.Type;
 
 @Entity
 @Data
 public class Car {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column
@@ -27,9 +27,10 @@ public class Car {
     private double price;
 
 
-
+    @Column(name="clientPackage", columnDefinition="ENUM('STANDARD','INTERMEDIATE','LUXURY')")
     @Enumerated(EnumType.STRING)
     private ClientPackage clientPackage;
+    @Column(name="carStatus", columnDefinition="ENUM('RENTED','AVAILABLE','UNAVAILABLE')")
     @Enumerated(EnumType.STRING)
     private CarStatus carStatus;
 
@@ -37,16 +38,6 @@ public class Car {
     @JoinColumn(name = "client_id")
     private Client client;
 
-    public Car(String name, String type, String model, String engineType, String gearbox, double price, ClientPackage clientPackage, CarStatus carStatus) {
-        this.name = name;
-        this.type = type;
-        this.model = model;
-        this.engineType = engineType;
-        this.gearbox = gearbox;
-        this.price = price;
-        this.clientPackage = clientPackage;
-        this.carStatus = carStatus;
-    }
 
     public Car() {
 
