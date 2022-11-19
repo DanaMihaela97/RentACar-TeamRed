@@ -4,15 +4,10 @@
 <hibernate-configuration>
     <session-factory>
         <property name="hibernate-dialect">org.hibernate.dialect.MySQLDialect</property>
-
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-
         <property name="hibernate.connection.url">jdbc:mysql://localhost/team_red</property>
-
         <property name="hibernate.connection.username">root</property>
-
         <property name="hibernate.connection.password">pisicameaQt0~</property>
-
         <property name="hibernate.hbm2ddl.auto">validate</property>
         <!-- validate -  valideaza clasele cu tabelele -->
         <mapping class="org.example.car.Car"/>
@@ -30,9 +25,6 @@
         <mapping class ="org.example.client.ClientPackage"/>
         <mapping class = "org.example.client.ClientRepository"/>
         <mapping class = "org.example.client.ClientService"/>
-        <mapping class="org.example.returned_cars.ReturnedCars"/>
-
-
 
 
     </session-factory>

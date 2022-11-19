@@ -5,7 +5,6 @@ import org.example.CrudManagement;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.criteria.JpaCriteriaQuery;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,6 +29,7 @@ public class CarRepository implements CrudManagement<Car> {
             session.beginTransaction();
             session.merge(item);
             session.getTransaction().commit();
+
         }
     }
 
@@ -74,4 +74,21 @@ public class CarRepository implements CrudManagement<Car> {
             session.getTransaction().commit();
         }
     }
+    public Car getCarId(int id) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            List<Car> carList = getAll();
+            for (Car car : carList) {
+                if (car.getId() == id) {
+                    return car;
+                }
+            }
+            session.getTransaction().commit();
+        }
+        return null;
+    }
 }
+
+
+
+

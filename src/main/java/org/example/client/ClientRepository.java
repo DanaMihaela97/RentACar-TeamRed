@@ -5,9 +5,7 @@ import org.example.CrudManagement;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.criteria.JpaCriteriaQuery;
-
 import java.util.List;
-
 import static org.example.car.CarService.sessionFactory;
 
 public class ClientRepository implements CrudManagement<Client> {
@@ -18,9 +16,7 @@ public class ClientRepository implements CrudManagement<Client> {
             session.persist(item);
             transaction.commit();
         }
-
     }
-
     @Override
     public void update(Client item) {
 
@@ -29,9 +25,7 @@ public class ClientRepository implements CrudManagement<Client> {
             session.merge(item);
             session.getTransaction().commit();
         }
-
     }
-
     @Override
     public List<Client> getAll() {
         try (Session session = sessionFactory.openSession()) {
@@ -42,7 +36,6 @@ public class ClientRepository implements CrudManagement<Client> {
             return typedQuery.getResultList();
         }
     }
-
     @Override
     public Client getById(int id) {
 
@@ -50,14 +43,13 @@ public class ClientRepository implements CrudManagement<Client> {
             return session.get(Client.class, id);
         }
     }
-
     @Override
     public void delete(int item) {
         System.out.println("Deleting client...");
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             Client client = getById(item);
-            if (client == null){
+            if (client == null) {
                 System.out.println("Client with id " + item + " doesn't exist.");
             } else {
                 session.remove(client);
@@ -67,13 +59,19 @@ public class ClientRepository implements CrudManagement<Client> {
         }
     }
     public Client getByEmail(String email) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
             List<Client> clientList = getAll();
             for (Client client : clientList) {
                 if (client.getEmail().equals(email)) {
                     return client;
                 }
             }
-            return new Client();
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return null;
     }
+}
 

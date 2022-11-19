@@ -4,18 +4,14 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.example.car.Car;
 import org.example.client.Client;
-
 import java.time.LocalDate;
-import java.util.Date;
-
 @Entity
 @Data
 @Table(name="rent_detail")
 public class RentDetail {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
     @Column
     private LocalDate startDate;
     @Column

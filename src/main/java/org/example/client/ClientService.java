@@ -4,15 +4,9 @@ import org.example.car.Car;
 import org.example.car.CarService;
 import org.example.rentdetail.RentDetail;
 import org.example.rentdetail.RentDetailService;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
 
-import java.time.LocalDate;
-import java.time.Period;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 import java.util.Scanner;
 
 public class ClientService {
@@ -26,11 +20,9 @@ public class ClientService {
     RentDetailService rentDetailService;
     Scanner scanner=new Scanner(System.in);
 
-
     public static SessionFactory sessionFactory = new Configuration()
             .configure("hibernate.cfg.xml")
             .buildSessionFactory();
-
     public void createAccount(Client... clients) {
             Scanner scanner = new Scanner(System.in);
             System.out.println("Create account. \nEnter your name: ");
@@ -47,14 +39,16 @@ public class ClientService {
 
             clientRepository.insert(client);
     }
-    public void chooseCar(Client client){
+    public boolean chooseCar(Client client){
         carService.setClient(client);
         boolean result = carService.chooseCar();
         if(result){
             client.setRentCount(client.getRentCount()+1);
             carService.setClient(client); // updatam clientul care utilizeaza serviciul
             clientRepository.update(client);
+            return true;
         }
+        return false;
     }
     public void generateReceipt(Client client){
         rentDetailService.insertRentPeriod(client);
@@ -63,6 +57,9 @@ public class ClientService {
     public Client logIn(String email){
         return clientRepository.getByEmail(email);
     }
+    public Client logInId(int id){
+        return clientRepository.getById(id);
+    }
     public void returnCar(Client client){
         RentDetail rentDetail = rentDetailService.findByClientId(client);
         rentDetailService.setRentDetail(rentDetail);
@@ -70,5 +67,9 @@ public class ClientService {
         rentDetailService.returnCar(client, car);
         carService.returnCar(car);
         clientRepository.update(client);
+    }
+    public Client findClientByEmail(String email){
+        return clientRepository.getByEmail(email);
+
     }
 }
